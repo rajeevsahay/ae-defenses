@@ -33,7 +33,7 @@ print ("Accuracy: %.2f%%" %(scores[1]*100))
 
 #Create adversarial examples on testing data
 sess =  backend.get_session()
-epsilon = 0.25
+epsilon = 0.05
 wrap = KerasModelWrapper(fc_classifier)
 fgsm = FastGradientMethod(wrap, sess=sess)
 #adv_train_x = fgsm.generate_np(data_train, eps=epsilon, clip_min=0., clip_max=1.)
@@ -45,7 +45,7 @@ adv_acc = fc_classifier.evaluate(adv_test_x, labels_test)
 #Print accuracy of attacked, no defense testing set
 print("Accuracy of perturbed data without defense")
 print ("Accuracy: %.2f%%" %(adv_acc[1]*100))
-
+'''
 #Load pre-processing autoencoder
 pp_ae = load_model('pp_auto_encoder_fgsm.h5')
 
@@ -57,7 +57,7 @@ adv_scores = fc_classifier.evaluate(decoded_data, labels_test)
 
 #Print accuracy of attacked data after preprocessing
 print("Accuracy of perturbed data using DAE as Defense")
-print ("Accuracy: %.2f%%" %(adv_scores[1]*100))
+print ("Accuracy: %.2f%%" %(adv_scores[1]*100))'''
 
 
 
