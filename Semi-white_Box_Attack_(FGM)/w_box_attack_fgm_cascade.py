@@ -22,7 +22,7 @@ labels_test = keras.utils.np_utils.to_categorical(labels_test, num_classes=10)
 
 #Import trained classifer
 backend.set_learning_phase(False)
-fc_classifier = load_model('../saved_models/classifiers/784-100_100epochs.h5')
+fc_classifier = load_model('fc-100-100-10.h5')
 #fc_classifier = load_model('fc-100-100-10.h5')
 
 #Evaluate on clean data
