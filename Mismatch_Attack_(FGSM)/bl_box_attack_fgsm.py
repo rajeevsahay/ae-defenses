@@ -3,6 +3,7 @@ import keras
 from keras.datasets import mnist
 from keras.models import load_model
 from keras import backend
+from keras import backend as K
 from cleverhans.attacks import FastGradientMethod
 from cleverhans.utils_keras import KerasModelWrapper
 
@@ -62,3 +63,27 @@ adv_scores = fc_classifier.evaluate(decoded_data, labels_test)
 print("Accuracy of perturbed data using DAE (trained with actual classifier) as Defense")
 print ("Accuracy: %.2f%%" %(adv_scores[1]*100))
 
+#Load dimensionality reduction AE
+red_dim_ae = load_model('../saved_models/autoencoders/784-40-784_100epochs.h5')
+
+#Obtain reduced dimensions of perturbed testing set
+ae_hidden_representation = K.function([red_dim_ae.layers[0].input], [red_dim_ae.layers[0].output])
+hidden_representation = ae_hidden_representation([adv_test_x])
+
+#Load classifier with input dimension of 40
+red_dim_classifier = load_model('../saved_models/classifiers/40-100_100epochs.h5')
+
+#Evaluate accuracy with reduced dimensions
+red_dim_acc = red_dim_classifier.evaluate(hidden_representation, labels_test)
+
+#Print accuracy of attacked data after reducing dimensions
+print("Accuracy of perturbed data using dim. red. as Defense")
+print ("Accuracy: %.2f%%" %(red_dim_acc[1]*100))
+
+#Cascade defense
+series_defense_data = ae_hidden_representation([decoded_data])
+sereis_acc = red_dim_classifier.evaluate(series_defense_data, labels_test)
+
+#Print accuracy of attacked data after series defense
+print("Accuracy of perturbed data using series Defense")
+print ("Accuracy: %.2f%%" %(sereis_acc[1]*100))

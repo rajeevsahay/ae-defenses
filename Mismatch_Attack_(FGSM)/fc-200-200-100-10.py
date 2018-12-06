@@ -1,8 +1,8 @@
 #Creating a fully-connected classifier using clean,
 #uncorrupted MNIST data on ten digits
 
-#Loss minimizes to 0.0081 over 20 epochs using cross entropy and adam
-#Acieves accuracy of 97.88% on testing data
+#Loss minimizes to 2.6881e-04 over 100 epochs using cross entropy and adam
+#Acieves accuracy of 98.53% on testing data
 
 import numpy as np
 import tensorflow as tf
@@ -54,7 +54,7 @@ batch_size = 200
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 #Train model using input of clean and corrupted data and fit to clean reconstructions only
-model.fit(data_train, labels_train, validation_data=(data_test, labels_test), epochs=20, batch_size=batch_size, shuffle=True)
+model.fit(data_train, labels_train, validation_data=(data_test, labels_test), epochs=100, batch_size=batch_size, shuffle=True)
 
 #Save the model
 model.save('fc-200-200-100-10.h5')
