@@ -64,7 +64,7 @@ model.compile(loss='mean_squared_error', optimizer='adam')
 model.fit(data_total_train, labels_total_train, validation_data=(data_total_test, labels_total_test), epochs=150, batch_size=256, shuffle=True)
 
 #Save the model
-model.save('pp_auto_encoder_eps50.h5')
+#model.save('pp_auto_encoder_eps50.h5')
 
 #Predict reconstructions of test data
 decoded_images = model.predict(data_total_test)

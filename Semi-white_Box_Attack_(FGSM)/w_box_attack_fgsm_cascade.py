@@ -34,7 +34,7 @@ print ("Accuracy: %.2f%%" %(scores[1]*100))
 
 #Create adversarial examples on testing data
 sess =  backend.get_session()
-epsilon = 0.5
+epsilon = 0.25
 wrap = KerasModelWrapper(fc_classifier)
 fgsm = FastGradientMethod(wrap, sess=sess)
 #adv_train_x = fgsm.generate_np(data_train, eps=epsilon, clip_min=0., clip_max=1.)
@@ -67,7 +67,7 @@ red_dim_ae = load_model('../saved_models/autoencoders/784-60-784_100epochs.h5')
 ae_hidden_representation = K.function([red_dim_ae.layers[0].input], [red_dim_ae.layers[0].output])
 hidden_representation = ae_hidden_representation([adv_test_x])
 
-#Load classifier with input dimension of 80
+#Load classifier with input dimension of 60
 red_dim_classifier = load_model('../saved_models/classifiers/60-100_100epochs.h5')
 
 #Evaluate accuracy with reduced dimensions

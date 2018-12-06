@@ -64,13 +64,11 @@ red_dim_classifier_80 = load_model('../saved_models/classifiers/80-100_100epochs
 red_dim_classifier_100 = load_model('../saved_models/classifiers/100-100_100epochs.h5')
 red_dim_classifier_331 = load_model('../saved_models/classifiers/331-100_100epochs.h5')
 
-#Print accuracy of unattacked, no defense testing set
-#print ("Accuracy: %.2f%%" %(scores[1]*100))
 
 for idx, epsilon in enumerate(e):
     print(idx)
     data[idx, 0] = epsilon
-    data[idx, 1] = scores[1]*100 #No attack, not defense
+    data[idx, 1] = scores[1]*100 #No attack, no defense
 
     #Create adversarial examples on testing data
     adv_test_x = fgsm.generate_np(data_test, eps=epsilon, clip_min=0., clip_max=1.)
@@ -79,7 +77,7 @@ for idx, epsilon in enumerate(e):
     adv_acc = fc_classifier.evaluate(adv_test_x, labels_test)
     data[idx, 2] = adv_acc[1]*100 #attack, no defense
 
-    #Run testing data through pre-processor trained on eps=0.25
+    #Run testing data through DAE pre-processor trained on eps=0.25
     decoded_data_eps25 = pp_ae_eps25.predict(adv_test_x)
 
     #Evaluate accuracy of classifier after pre-processing
@@ -130,4 +128,4 @@ for idx, epsilon in enumerate(e):
     data[idx,15] = sereis_acc_331[1]*100 #attacked and defended using series defense with DAE trained on eps=0.25 and K=331
 
 
-np.savetxt("fgsm_whitebox_eps25_eps50_dae_50.csv", data, delimiter=",")
+np.savetxt("fgsm_whitebox_data", data, delimiter=",")
