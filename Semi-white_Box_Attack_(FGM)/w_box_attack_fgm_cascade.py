@@ -5,7 +5,7 @@ from keras.models import load_model
 from keras import backend
 from keras import backend as K
 from cleverhans.utils_keras import KerasModelWrapper
-from cleverhans_class import FastGradientMethod
+from cleverhans.attacks import FastGradientMethod
 
 #Load training and testing data and normalize to [0, 1]
 (data_train, labels_train), (data_test, labels_test) = mnist.load_data()

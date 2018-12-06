@@ -4,7 +4,7 @@ from keras.datasets import mnist
 from keras.models import load_model
 from keras import backend
 from cleverhans.utils_keras import KerasModelWrapper
-from cleverhans_class import FastGradientMethod
+from cleverhans.attacks import FastGradientMethod
 
 #Load training and testing data and normalize to [0, 1]
 (data_train, labels_train), (data_test, labels_test) = mnist.load_data()
@@ -22,6 +22,7 @@ labels_test = keras.utils.np_utils.to_categorical(labels_test, num_classes=10)
 #Import trained classifer
 backend.set_learning_phase(False)
 fc_classifier = load_model('fc-100-100-10.h5')
+#fc_classifier = load_model('../saved_models/classifiers/784-100_100epochs.h5')
 
 #Evaluate on clean data
 scores = fc_classifier.evaluate(data_test, labels_test)
@@ -32,11 +33,10 @@ print ("Accuracy: %.2f%%" %(scores[1]*100))
 
 #Create adversarial examples according to l-2 norm on testing data
 sess =  backend.get_session()
-epsilon = 2.5
+epsilon = -0.75
 ord = 2
 wrap = KerasModelWrapper(fc_classifier)
 fgm = FastGradientMethod(wrap, sess=sess)
-adv_train_x = fgm.generate_np(data_train, eps=epsilon, ord=ord, clip_min=0., clip_max=1.)
 adv_test_x = fgm.generate_np(data_test, eps=epsilon, ord=ord, clip_min=0., clip_max=1.)
 
 #Evaluate model after attacking data without pre-processing

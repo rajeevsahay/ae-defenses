@@ -5,7 +5,7 @@ from keras.datasets import mnist
 from keras.models import load_model
 from keras import backend as K
 from cleverhans.utils_keras import KerasModelWrapper
-from cleverhans_class import FastGradientMethod
+from cleverhans.attacks import FastGradientMethod
 
 
 e = np.linspace(0.05,3.5,70)

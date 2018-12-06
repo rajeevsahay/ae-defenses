@@ -5,7 +5,7 @@ from keras.layers import Dense
 from keras.models import load_model
 from keras import backend
 import matplotlib.pyplot as plt
-from cleverhans_class import FastGradientMethod
+from cleverhans.attacks import FastGradientMethod
 from cleverhans.utils_keras import KerasModelWrapper
 
 #Loss minimizes to 0.0035 over 100 epochs
@@ -26,7 +26,7 @@ backend.set_learning_phase(False)
 
 #Create adversarial examples on testing data
 sess =  backend.get_session()
-epsilon = 1.0
+epsilon = 3.
 ord = 2
 wrap = KerasModelWrapper(keras_model)
 fgsm = FastGradientMethod(wrap, sess=sess)
